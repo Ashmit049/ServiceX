@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Service - ServiceX</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+  <!-- Navigation -->
+  <nav class="bg-gradient-to-r from-blue-600 to-purple-700 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center">
+          <a href="./HomePages/home.html" class="text-white text-2xl font-bold tracking-wide">ServiceX</a>
+          <div class="ml-10 flex items-baseline space-x-4">
+            <a href="./HomePages/home.html" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">Home</a>
+            <a href="services.html" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">Services</a>
+            <a href="userprofile.html" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">Profile</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <!-- Breadcrumb Navigation -->
+    <nav class="flex mb-6" aria-label="Breadcrumb">
+      <ol class="flex items-center space-x-2">
+        <li>
+          <a href="./HomePages/home.html" class="text-gray-500 hover:text-gray-700">Home</a>
+        </li>
+        <li class="flex items-center">
+          <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+          </svg>
+          <a href="services.html" class="ml-2 text-gray-500 hover:text-gray-700">Services</a>
+        </li>
+        <li class="flex items-center">
+          <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="ml-2 text-gray-900 font-medium" id="service-name">Service Booking</span>
+        </li>
+      </ol>
+    </nav>
+
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <div class="grid md:grid-cols-3">
+        <!-- Service Preview Column -->
+        <div class="md:col-span-1 border-r border-gray-200">
+          <div class="p-6">
+            <div class="mb-6">
+              <img id="service-image" src="/api/placeholder/400/320" alt="Service" class="w-full h-64 object-cover rounded-lg">
+            </div>
+            <h1 id="service-title" class="text-2xl font-bold mb-2">Service Name</h1>
+            <div class="flex items-center mb-4">
+              <div class="flex text-yellow-400">
+                <span id="service-rating">4.5</span>
+                <svg class="h-5 w-5 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                </svg>
+              </div>
+              <span class="mx-2">|</span>
+              <span id="service-reviews" class="text-gray-600">126 reviews</span>
+            </div>
+            <p id="service-price" class="text-2xl font-bold text-green-600 mb-4">₹999</p>
+            <div class="mb-6">
+              <h2 class="font-semibold text-lg mb-2">Service Description</h2>
+              <p id="service-description" class="text-gray-700">Detailed description of the service including what's included, what to expect, and any preparation needed before the service provider arrives.</p>
+            </div>
+            <div>
+              <h2 class="font-semibold text-lg mb-2">What's Included</h2>
+              <ul id="service-inclusions" class="list-disc pl-5 text-gray-700 space-y-1">
+                <li>Professional service provider</li>
+                <li>Standard service time: 2 hours</li>
+                <li>Equipment and supplies</li>
+                <li>100% satisfaction guarantee</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Booking Form Column -->
+        <div class="md:col-span-2 p-6">
+          <div class="border-b border-gray-200 pb-6 mb-6">
+            <h2 class="text-2xl font-bold mb-4">Book Your Service</h2>
+            <p class="text-gray-600">Complete the form below to schedule your service appointment.</p>
+          </div>
+
+          <form id="booking-form" class="space-y-6">
+            <!-- Personal Information -->
+            <div>
+              <h3 class="text-lg font-semibold mb-4">Personal Information</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label for="first-name" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                  <input type="text" id="first-name" name="first-name" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                </div>
+                <div>
+                  <label for="last-name" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                  <input type="text" id="last-name" name="last-name" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                </div>
+                <div>
+                  <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                </div>
+                <div>
+                  <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                  <input type="tel" id="phone" name="phone" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                </div>
+              </div>
+            </div>
+
+            <!-- Service Address -->
+            <div>
+              <h3 class="text-lg font-semibold mb-4">Service Address</h3>
+              <div class="space-y-4">
+                <div>
+                  <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                  <input type="text" id="address" name="address" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label for="city" class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                    <input type="text" id="city" name="city" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                  </div>
+                  <div>
+                    <label for="state" class="block text-sm font-medium text-gray-700 mb-1">State</label>
+                    <input type="text" id="state" name="state" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                  </div>
+                  <div>
+                    <label for="zip" class="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
+                    <input type="text" id="zip" name="zip" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                  </div>
+                </div>
+                <div>
+                  <label for="instructions" class="block text-sm font-medium text-gray-700 mb-1">Special Instructions (Optional)</label>
+                  <textarea id="instructions" name="instructions" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scheduling -->
+            <div>
+              <h3 class="text-lg font-semibold mb-4">Schedule Service</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Preferred Date</label>
+                  <input type="date" id="date" name="date" min="" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                </div>
+                <div>
+                  <label for="time" class="block text-sm font-medium text-gray-700 mb-1">Preferred Time</label>
+                  <select id="time" name="time" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                    <option value="">Select a time slot</option>
+                    <option value="08:00-10:00">8:00 AM - 10:00 AM</option>
+                    <option value="10:00-12:00">10:00 AM - 12:00 PM</option>
+                    <option value="12:00-14:00">12:00 PM - 2:00 PM</option>
+                    <option value="14:00-16:00">2:00 PM - 4:00 PM</option>
+                    <option value="16:00-18:00">4:00 PM - 6:00 PM</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment -->
+            <div>
+              <h3 class="text-lg font-semibold mb-4">Payment Method</h3>
+              <div class="space-y-4">
+                <div class="flex items-center">
+                  <input type="radio" id="payment-online" name="payment" value="online" class="h-4 w-4 text-purple-600 focus:ring-purple-500" checked>
+                  <label for="payment-online" class="ml-2 block text-sm text-gray-700">Pay Online</label>
+                </div>
+                <div class="flex items-center">
+                  <input type="radio" id="payment-cash" name="payment" value="cash" class="h-4 w-4 text-purple-600 focus:ring-purple-500">
+                  <label for="payment-cash" class="ml-2 block text-sm text-gray-700">Pay Cash on Delivery</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="border-t border-gray-200 pt-6">
+              <h3 class="text-lg font-semibold mb-4">Order Summary</h3>
+              <div class="space-y-2 mb-4">
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Service Fee</span>
+                  <span id="summary-service-fee" class="font-medium">₹899</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Convenience Fee</span>
+                  <span id="summary-convenience-fee" class="font-medium">₹100</span>
+                </div>
+                <div class="flex justify-between border-t border-gray-200 pt-2 mt-2">
+                  <span class="text-gray-800 font-semibold">Total</span>
+                  <span id="summary-total" class="text-gray-800 font-bold">₹999</span>
+                </div>
+              </div>
+              <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-purple-700 text-white py-3 rounded-md font-medium hover:from-blue-700 hover:to-purple-800 transition duration-300">Book Now</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">ServiceX</h3>
+          <p class="text-gray-400">Connecting professionals and opportunities worldwide.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-3">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="./HomePages/home.html" class="text-gray-400 hover:text-white">Home</a></li>
+            <li><a href="services.html" class="text-gray-400 hover:text-white">Services</a></li>
+            <li><a href="./HomePages/home.html#how-it-works" class="text-gray-400 hover:text-white">How It Works</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-3">Support</h4>
+          <ul class="space-y-2">
+            <li><a href="./HomePages/home.html#contact" class="text-gray-400 hover:text-white">Contact Us</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-3">Connect With Us</h4>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white">
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3 8h-1.35c-.538 0-.65.221-.65.778v1.222h2l-.209 2h-1.791v7h-3v-7h-2v-2h2v-2.308c0-1.769.931-2.692 3.029-2.692h1.971v3z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white">
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.066 9.645c.183 4.04-2.83 8.544-8.164 8.544-1.622 0-3.131-.476-4.402-1.291 1.524.18 3.045-.244 4.252-1.189-1.256-.023-2.317-.854-2.684-1.995.451.086.895.061 1.298-.049-1.381-.278-2.335-1.522-2.304-2.853.388.215.83.344 1.301.359-1.279-.855-1.641-2.544-.889-3.835 1.416 1.738 3.533 2.881 5.92 3.001-.419-1.796.944-3.527 2.799-3.527.824 0 1.572.349 2.096.907.654-.128 1.27-.368 1.824-.697-.215.671-.67 1.233-1.263 1.589.581-.07 1.135-.224 1.649-.453-.384.578-.87 1.084-1.433 1.489v.385z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white">
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm2 9h-4v2h4v2h-4v2h4v2h-6v-8h6v2zm2 8h6v-8h-6v8zm1-7h4v2h-4v-2zm0 3h4v2h-4v-2zm1 3h2v2h-2v-2z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-8 pt-6 border-t border-gray-800">
+        <p>&copy; 2025 ServiceX. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Get URL parameters
+    function getUrlParams() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return {
+        serviceName: urlParams.get('name') || 'Service Name',
+        serviceCategory: urlParams.get('category') || 'Category',
+        servicePrice: urlParams.get('price') || '₹999',
+        serviceRating: urlParams.get('rating') || '4.5',
+        serviceRegion: urlParams.get('region') || 'Region',
+        serviceImage: urlParams.get('image') || '/api/placeholder/400/320'
+      };
+    }
+  
+    // Set minimum date to today
+    function setMinDate() {
+      const today = new Date();
+      const formattedDate = today.toISOString().split('T')[0];
+      document.getElementById('date').min = formattedDate;
+    }
+  
+    // Form submission
+    document.getElementById('booking-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+  
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Please log in to book a service.');
+        return;
+      }
+  
+      const serviceName = document.getElementById('service-title').textContent;
+      const serviceTime = document.getElementById('time').value;
+      const paymentAmount = parseInt(document.getElementById('summary-total').textContent.replace('₹', ''));
+  
+      try {
+        const response = await fetch('http://localhost:5000/book', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            serviceName,
+            serviceTime,
+            paymentAmount
+          })
+        });
+  
+        const data = await response.json();
+  
+        if (response.ok) {
+          alert('Booking successful!');
+          window.location.href = './HomePages/home.html';
+        } else {
+          alert(data.message || 'Booking failed.');
+        }
+      } catch (error) {
+        console.error('Booking error:', error);
+        alert('An error occurred while booking.');
+      }
+    });
+  
+    // Initialize the page
+    window.onload = function () {
+      const params = getUrlParams();
+  
+      document.getElementById('service-name').textContent = params.serviceName;
+      document.getElementById('service-title').textContent = params.serviceName;
+      document.getElementById('service-price').textContent = params.servicePrice;
+      document.getElementById('service-rating').textContent = params.serviceRating;
+      document.getElementById('service-image').src = params.serviceImage;
+      document.getElementById('service-image').alt = params.serviceName;
+  
+      const price = params.servicePrice.replace('₹', '');
+      const serviceFee = Math.round(parseInt(price) * 0.9);
+      const convenienceFee = parseInt(price) - serviceFee;
+  
+      document.getElementById('summary-service-fee').textContent = `₹${serviceFee}`;
+      document.getElementById('summary-convenience-fee').textContent = `₹${convenienceFee}`;
+      document.getElementById('summary-total').textContent = params.servicePrice;
+  
+      setMinDate();
+  
+      const descriptions = {
+        'Cleaning': 'Professional cleaning service that includes dusting, vacuuming, mopping, and sanitizing all surfaces. Our team brings all necessary equipment and supplies.',
+        'Plumbing': 'Expert plumbing services including fixing leaks, unclogging drains, installing fixtures, and repairing pipes. All tools and basic materials are included.',
+        'Electrician': 'Professional electrical services including installation, repairs, and maintenance of electrical systems, fixtures, and appliances.',
+        'Carpentry': 'Skilled carpentry work including furniture assembly, repairs, customization, and installation of wooden fixtures and structures.'
+      };
+  
+      document.getElementById('service-description').textContent = descriptions[params.serviceCategory] || 
+        'Professional service provided by verified experts. Service includes all necessary equipment and materials for standard work.';
+    };
+  </script>
+  
+</body>
+</html>

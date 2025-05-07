@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Jobs - ServiceX</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+  <!-- Navigation -->
+  <nav class="bg-gradient-to-r from-blue-600 to-purple-700 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center">
+          <a href="./HomePages/home.html" class="text-white text-2xl font-bold tracking-wide">ServiceX</a>
+          <div class="ml-10 flex items-baseline space-x-4">
+            <a href="./HomePages/home.html" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">Home</a>
+            <a href="userprofile.html" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">Profile</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="text-center py-10 bg-gradient-to-r from-purple-500 to-indigo-600 text-white">
+    <h1 class="text-4xl font-bold">Browse Available Jobs</h1>
+  </header>
+
+  <!-- Search Filter Bar -->
+  <div class="bg-white shadow-md py-6 px-4">
+    <div class="max-w-7xl mx-auto flex flex-wrap gap-4 justify-center">
+      <input type="text" id="jobLocationFilter" placeholder="Filter by Location" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+      <input type="number" id="minSalaryFilter" placeholder="Min Salary" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+      <input type="number" id="maxSalaryFilter" placeholder="Max Salary" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+      <select id="jobSortFilter" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+        <option value="">Sort</option>
+        <option value="salaryLowHigh">Salary: Low to High</option>
+        <option value="salaryHighLow">Salary: High to Low</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Jobs Grid -->
+  <div class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+    <div id="jobsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Job cards will appear here -->
+    </div>
+    <p id="noJobsMsg" class="text-center text-red-600 mt-4 hidden">No jobs found matching your filters.</p>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">ServiceX</h3>
+          <p class="text-gray-400">Connecting professionals and opportunities worldwide.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-3">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="home.html" class="text-gray-400 hover:text-white">Home</a></li>
+            <li><a href="home.html#services" class="text-gray-400 hover:text-white">Services</a></li>
+            <li><a href="home.html#how-it-works" class="text-gray-400 hover:text-white">How It Works</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-3">Support</h4>
+          <ul class="space-y-2">
+            <li><a href="home.html#contact" class="text-gray-400 hover:text-white">Contact Us</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-3">Connect With Us</h4>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white">
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3 8h-1.35c-.538 0-.65.221-.65.778v1.222h2l-.209 2h-1.791v7h-3v-7h-2v-2h2v-2.308c0-1.769.931-2.692 3.029-2.692h1.971v3z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white">
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.066 9.645c.183 4.04-2.83 8.544-8.164 8.544-1.622 0-3.131-.476-4.402-1.291 1.524.18 3.045-.244 4.252-1.189-1.256-.023-2.317-.854-2.684-1.995.451.086.895.061 1.298-.049-1.381-.278-2.335-1.522-2.304-2.853.388.215.83.344 1.301.359-1.279-.855-1.641-2.544-.889-3.835 1.416 1.738 3.533 2.881 5.92 3.001-.419-1.796.944-3.527 2.799-3.527.824 0 1.572.349 2.096.907.654-.128 1.27-.368 1.824-.697-.215.671-.67 1.233-1.263 1.589.581-.07 1.135-.224 1.649-.453-.384.578-.87 1.084-1.433 1.489v.385z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white">
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm2 9h-4v2h4v2h-4v2h4v2h-6v-8h6v2zm2 8h6v-8h-6v8zm1-7h4v2h-4v-2zm0 3h4v2h-4v-2zm1 3h2v2h-2v-2z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-8 pt-6 border-t border-gray-800">
+        <p>&copy; 2025 ServiceX. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let allJobs = [];
+    let userSkill = "";
+
+    async function fetchUserSkill() {
+      try {
+        const token = localStorage.getItem('token');
+        const profileRes = await axios.get('http://localhost:5000/profile', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        userSkill = profileRes.data.skills || "Plumber";
+      } catch (err) {
+        console.error("Error fetching user profile:", err);
+        userSkill = "Plumber";
+      }
+    }
+
+    async function fetchJobs() {
+      try {
+        allJobs = [
+          // Plumber jobs
+          { title: "Bathroom Plumbing", location: "Mumbai", salary: 1200, description: "Fix leaking taps and pipelines", requiredSkill: "Plumber" },
+          { title: "Kitchen Pipe Fix", location: "Delhi", salary: 1500, description: "Replace old sink pipe and seal joints", requiredSkill: "Plumber" },
+          { title: "Shower Replacement", location: "Hyderabad", salary: 1300, description: "Replace old shower with new model", requiredSkill: "Plumber" },
+          { title: "Main Water Line Setup", location: "Nagpur", salary: 1600, description: "Install new main water pipeline for apartment", requiredSkill: "Plumber" },
+          { title: "Geyser Installation", location: "Surat", salary: 1400, description: "Install geyser and connect inlet/outlet", requiredSkill: "Plumber" },
+
+          // Carpenter jobs
+          { title: "Wooden Door Repair", location: "Pune", salary: 1800, description: "Fix alignment and hinges of wooden door", requiredSkill: "Carpenter" },
+          { title: "Furniture Assembly", location: "Bangalore", salary: 2000, description: "Assemble flat-pack furniture items", requiredSkill: "Carpenter" },
+          { title: "Wall Shelf Fitting", location: "Indore", salary: 1000, description: "Fit wooden shelf and anchor it securely", requiredSkill: "Carpenter" },
+          { title: "Bed Frame Repair", location: "Chandigarh", salary: 1700, description: "Repair and stabilize broken bed frame", requiredSkill: "Carpenter" },
+
+          // Laptop service
+          { title: "Laptop Fan Cleaning", location: "Chennai", salary: 800, description: "Open laptop and clean internal fan and vents", requiredSkill: "Laptop Service" },
+          { title: "OS Installation", location: "Delhi", salary: 1000, description: "Format and install new OS with drivers", requiredSkill: "Laptop Service" },
+          { title: "SSD Upgrade", location: "Noida", salary: 1200, description: "Replace HDD with SSD and reinstall OS", requiredSkill: "Laptop Service" },
+          { title: "Keyboard Replacement", location: "Kolkata", salary: 1500, description: "Replace damaged laptop keyboard", requiredSkill: "Laptop Service" },
+
+          // Painter jobs
+          { title: "Room Painting", location: "Ahmedabad", salary: 2500, description: "Paint a 12x12 room with wall putty", requiredSkill: "Painter" },
+          { title: "Metal Gate Paint", location: "Mumbai", salary: 1100, description: "Apply anti-rust primer and black paint", requiredSkill: "Painter" },
+          { title: "Exterior Wall Painting", location: "Lucknow", salary: 3000, description: "Paint outer walls using weather shield paint", requiredSkill: "Painter" },
+          { title: "Ceiling Repaint", location: "Bhopal", salary: 2000, description: "Repaint false ceiling with waterproof color", requiredSkill: "Painter" },
+
+          // Cleaner jobs
+          { title: "Sofa Cleaning", location: "Hyderabad", salary: 1400, description: "Deep cleaning of 3+1 sofa set", requiredSkill: "Cleaner" },
+          { title: "Bathroom Deep Clean", location: "Kolkata", salary: 1000, description: "Scrub tiles, commode and fittings", requiredSkill: "Cleaner" },
+          { title: "Kitchen Degreasing", location: "Jaipur", salary: 1300, description: "Clean oily surfaces and kitchen chimney", requiredSkill: "Cleaner" },
+          { title: "Carpet Steam Cleaning", location: "Delhi", salary: 1600, description: "Sanitize carpet with steam and vacuum", requiredSkill: "Cleaner" }
+        ];
+        renderJobs();
+      } catch (err) {
+        console.error("Error fetching jobs:", err);
+      }
+    }
+
+    function renderJobs() {
+      const locationFilter = document.getElementById('jobLocationFilter').value.toLowerCase();
+      const minSalary = parseInt(document.getElementById('minSalaryFilter').value) || 0;
+      const maxSalary = parseInt(document.getElementById('maxSalaryFilter').value) || Infinity;
+      const sortBy = document.getElementById('jobSortFilter').value;
+
+      let filteredJobs = allJobs.filter(job => {
+        return (
+          job.requiredSkill.toLowerCase().includes(userSkill.toLowerCase()) &&
+          job.location.toLowerCase().includes(locationFilter) &&
+          job.salary >= minSalary &&
+          job.salary <= maxSalary
+        );
+      });
+
+      if (sortBy === 'salaryLowHigh') {
+        filteredJobs.sort((a, b) => a.salary - b.salary);
+      } else if (sortBy === 'salaryHighLow') {
+        filteredJobs.sort((a, b) => b.salary - a.salary);
+      }
+
+      const jobsContainer = document.getElementById('jobsContainer');
+      jobsContainer.innerHTML = '';
+
+      if (filteredJobs.length === 0) {
+        document.getElementById('noJobsMsg').classList.remove('hidden');
+        return;
+      } else {
+        document.getElementById('noJobsMsg').classList.add('hidden');
+      }
+
+      filteredJobs.forEach(job => {
+        // Create image placeholder (similar to services page)
+        const placeholderImg = "https://picsum.photos/400/200?random=" + Math.floor(Math.random() * 100);
+        
+        jobsContainer.innerHTML += `
+          <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-transform duration-200 hover:-translate-y-1">
+            <img src="${placeholderImg}" alt="${job.title}" class="w-full h-48 object-cover">
+            <div class="p-4">
+              <h3 class="font-bold text-lg mb-2">${job.title}</h3>
+              <p class="text-gray-700">Location: ${job.location}</p>
+              <p class="text-green-600 font-semibold">₹${job.salary}</p>
+              <p class="text-gray-700 text-sm mt-2">${job.description}</p>
+              <a href="apply.html?title=${encodeURIComponent(job.title)}&location=${encodeURIComponent(job.location)}&salary=${encodeURIComponent(job.salary)}&description=${encodeURIComponent(job.description)}" class="block w-full mt-4 text-center bg-gradient-to-r from-blue-600 to-purple-700 text-white py-2 rounded hover:from-blue-700 hover:to-purple-800 transition duration-300">
+                Apply Now
+              </a>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await fetchUserSkill();
+      await fetchJobs();
+      document.querySelectorAll('#jobLocationFilter, #minSalaryFilter, #maxSalaryFilter, #jobSortFilter')
+        .forEach(input => input.addEventListener('input', renderJobs));
+    });
+  </script>
+</body>
+</html>

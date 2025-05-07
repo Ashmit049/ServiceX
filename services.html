@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Services - ServiceX</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+  <!-- Navigation -->
+  <nav class="bg-gradient-to-r from-blue-600 to-purple-700 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center">
+          <a href="./HomePages/home.html" class="text-white text-2xl font-bold tracking-wide">ServiceX</a>
+          <div class="ml-10 flex items-baseline space-x-4">
+            <a href="./HomePages/home.html" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">Home</a>
+            <a href="userprofile.html" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">Profile</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="text-center py-10 bg-gradient-to-r from-purple-500 to-indigo-600 text-white">
+    <h1 class="text-4xl font-bold">Browse Available Services</h1>
+  </header>
+
+  <!-- Search Filter Bar -->
+  <div class="bg-white shadow-md py-6 px-4">
+    <div class="max-w-7xl mx-auto flex flex-wrap gap-4 justify-center">
+      <input type="text" id="searchBar" placeholder="Search services..." class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+      <select id="categoryFilter" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+        <option value="">All Categories</option>
+        <option value="Cleaning">Cleaning</option>
+        <option value="Plumbing">Plumbing</option>
+        <option value="Electrician">Electrician</option>
+        <option value="Carpentry">Carpentry</option>
+      </select>
+      <select id="regionSelect" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+        <option value="">All Regions</option>
+        <option value="north">North</option>
+        <option value="south">South</option>
+        <option value="east">East</option>
+        <option value="west">West</option>
+      </select>
+      <select id="sortBy" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+        <option value="">Sort By</option>
+        <option value="priceLow">Price: Low to High</option>
+        <option value="priceHigh">Price: High to Low</option>
+        <option value="ratingHigh">Rating: High to Low</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Services Grid -->
+  <div class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+    <div id="servicesList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Service cards will appear here -->
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">ServiceX</h3>
+          <p class="text-gray-400">Connecting professionals and opportunities worldwide.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-3">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="home.html" class="text-gray-400 hover:text-white">Home</a></li>
+            <li><a href="home.html#services" class="text-gray-400 hover:text-white">Services</a></li>
+            <li><a href="home.html#how-it-works" class="text-gray-400 hover:text-white">How It Works</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-3">Support</h4>
+          <ul class="space-y-2">
+            <li><a href="home.html#contact" class="text-gray-400 hover:text-white">Contact Us</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-3">Connect With Us</h4>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white">
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3 8h-1.35c-.538 0-.65.221-.65.778v1.222h2l-.209 2h-1.791v7h-3v-7h-2v-2h2v-2.308c0-1.769.931-2.692 3.029-2.692h1.971v3z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white">
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.066 9.645c.183 4.04-2.83 8.544-8.164 8.544-1.622 0-3.131-.476-4.402-1.291 1.524.18 3.045-.244 4.252-1.189-1.256-.023-2.317-.854-2.684-1.995.451.086.895.061 1.298-.049-1.381-.278-2.335-1.522-2.304-2.853.388.215.83.344 1.301.359-1.279-.855-1.641-2.544-.889-3.835 1.416 1.738 3.533 2.881 5.92 3.001-.419-1.796.944-3.527 2.799-3.527.824 0 1.572.349 2.096.907.654-.128 1.27-.368 1.824-.697-.215.671-.67 1.233-1.263 1.589.581-.07 1.135-.224 1.649-.453-.384.578-.87 1.084-1.433 1.489v.385z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white">
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm2 9h-4v2h4v2h-4v2h4v2h-6v-8h6v2zm2 8h6v-8h-6v8zm1-7h4v2h-4v-2zm0 3h4v2h-4v-2zm1 3h2v2h-2v-2z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-8 pt-6 border-t border-gray-800">
+        <p>&copy; 2025 ServiceX. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const services = [
+      {
+        name: "Deep Home Cleaning",
+        category: "Cleaning",
+        region: "north",
+        rating: 4.6,
+        price: "₹1499",
+        image: "https://cleaningspaces.net/wp-content/uploads/2020/11/how-to-deep-clean-your-house.jpg"
+      },
+      {
+        name: "Plumber for Leaks",
+        category: "Plumbing",
+        region: "south",
+        rating: 4.1,
+        price: "₹399",
+        image: "https://tse3.mm.bing.net/th?id=OIP._kAnavXIvVSUKc7YyHn-0gHaFW&pid=Api&P=0&h=180"
+      },
+      {
+        name: "Electrical Wiring",
+        category: "Electrician",
+        region: "east",
+        rating: 4.8,
+        price: "₹999",
+        image: "https://tse1.mm.bing.net/th?id=OIP.GLJ3XTkht6pjLT3pVJL8bQHaEY&pid=Api&P=0&h=180"
+      },
+      {
+        name: "Wooden Furniture Repair",
+        category: "Carpentry",
+        region: "west",
+        rating: 4.3,
+        price: "₹1299",
+        image: "https://tse3.mm.bing.net/th?id=OIP.GJEdMwUBkoF_OoxrJ4ltLAHaHf&pid=Api&P=0&h=180"
+      },
+      {
+        name: "Bathroom Cleaning",
+        category: "Cleaning",
+        region: "east",
+        rating: 4.7,
+        price: "₹799",
+        image: "https://tse2.mm.bing.net/th?id=OIP.WVD_V_k5L2w9bewXpeHuQwHaEp&pid=Api&P=0&h=180"
+      },
+      {
+        name: "Fan Installation",
+        category: "Electrician",
+        region: "south",
+        rating: 4.5,
+        price: "₹349",
+        image: "https://tse3.mm.bing.net/th?id=OIP.96rOY_lY6KW4QPQ8BpEPlwHaEK&pid=Api&P=0&h=180"
+      },
+      {
+        name: "Wardrobe Assembly",
+        category: "Carpentry",
+        region: "north",
+        rating: 4.4,
+        price: "₹1199",
+        image: "https://tse1.mm.bing.net/th?id=OIP.L1iB4SrG54nQZQGKbKTK9gHaFj&pid=Api&P=0&h=180"
+      },
+      {
+        name: "Kitchen Sink Fix",
+        category: "Plumbing",
+        region: "north",
+        rating: 3.9,
+        price: "₹599",
+        image: "https://tse2.mm.bing.net/th?id=OIP.LPd6xnO6Nfc9remoewV-lAHaEK&pid=Api&P=0&h=180"
+      },
+      {
+        name: "Ceiling Light Setup",
+        category: "Electrician",
+        region: "west",
+        rating: 4.6,
+        price: "₹899",
+        image: "https://tse1.mm.bing.net/th?id=OIP.-nXjCyysc3m6Tr7iMO28AgAAAA&pid=Api&P=0&h=180"
+      },
+      {
+        name: "Custom Bookshelf",
+        category: "Carpentry",
+        region: "south",
+        rating: 4.9,
+        price: "₹1999",
+        image: "https://tse2.mm.bing.net/th?id=OIP.ZkBwS47gjrVgxnrHwzQ4KQHaGy&pid=Api&P=0&h=180"
+      }
+    ];
+
+    function displayServices(filter = {}) {
+      const list = document.getElementById("servicesList");
+      list.innerHTML = "";
+
+      let filtered = services.filter(service => {
+        return (!filter.region || service.region === filter.region) &&
+               (!filter.category || service.category === filter.category) &&
+               (!filter.search || service.name.toLowerCase().includes(filter.search.toLowerCase()));
+      });
+
+      if (filter.sort === "priceLow") {
+        filtered.sort((a, b) => parseInt(a.price.replace(/[^\d]/g, "")) - parseInt(b.price.replace(/[^\d]/g, "")));
+      } else if (filter.sort === "priceHigh") {
+        filtered.sort((a, b) => parseInt(b.price.replace(/[^\d]/g, "")) - parseInt(a.price.replace(/[^\d]/g, "")));
+      } else if (filter.sort === "ratingHigh") {
+        filtered.sort((a, b) => b.rating - a.rating);
+      }
+
+      if (filtered.length === 0) {
+        list.innerHTML = "<div class='text-center text-gray-500 text-lg py-12'>No services found!</div>";
+        return;
+      }
+
+      filtered.forEach(service => {
+        list.innerHTML += `
+          <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-transform duration-200 hover:-translate-y-1">
+            <img src="${service.image}" alt="${service.name}" class="w-full h-48 object-cover">
+            <div class="p-4">
+              <h3 class="font-bold text-lg mb-2">${service.name}</h3>
+              <p class="text-gray-700">Rating: ⭐ ${service.rating}</p>
+              <p class="text-green-600 font-semibold">${service.price}</p>
+              <p class="text-gray-700">Region: ${service.region.charAt(0).toUpperCase() + service.region.slice(1)}</p>
+              <a href="booking.html?name=${encodeURIComponent(service.name)}&price=${encodeURIComponent(service.price)}&rating=${encodeURIComponent(service.rating)}&region=${encodeURIComponent(service.region)}&category=${encodeURIComponent(service.category)}&image=${encodeURIComponent(service.image)}" class="block w-full mt-4 text-center bg-gradient-to-r from-blue-600 to-purple-700 text-white py-2 rounded hover:from-blue-700 hover:to-purple-800 transition duration-300">
+  Book Now
+</a>
+
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function applyFilters() {
+      const region = document.getElementById("regionSelect").value;
+      const category = document.getElementById("categoryFilter").value;
+      const search = document.getElementById("searchBar").value;
+      const sort = document.getElementById("sortBy").value;
+
+      displayServices({ region, category, search, sort });
+    }
+
+    document.getElementById("searchBar").addEventListener("input", applyFilters);
+    document.getElementById("categoryFilter").addEventListener("change", applyFilters);
+    document.getElementById("regionSelect").addEventListener("change", applyFilters);
+    document.getElementById("sortBy").addEventListener("change", applyFilters);
+
+    displayServices();
+  </script>
+</body>
+</html>

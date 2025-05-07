@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiceX | User Profile</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-gradient-to-r from-blue-600 to-purple-700 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="/" class="text-white text-2xl font-bold tracking-wide">ServiceX</a>
+                <div class="ml-10 flex items-baseline space-x-4">
+                    <a id="dynamicHomeLink" href="#" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                    <a href="#" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">Profile</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Section -->
+    <section class="py-16 max-w-4xl mx-auto">
+        <div class="bg-white p-8 rounded-lg shadow-lg text-center">
+            <label for="updateProfileImage" class="cursor-pointer">
+                <img id="userProfileImage" class="w-28 h-28 rounded-full mx-auto border-4 border-blue-500" src="default-profile.png" alt="User Profile Picture">
+            </label>
+            <input type="file" id="updateProfileImage" class="hidden" accept="image/*">
+
+            <h2 id="userName" class="text-3xl font-bold mt-4">Loading...</h2>
+            <p class="text-gray-600 mt-2 text-lg" id="userEmail">email@example.com</p>
+
+            <!-- Edit Profile Form -->
+            <form id="updateProfileForm" class="mt-6">
+                <input type="text" id="updateName" class="w-full p-3 border rounded-lg" placeholder="New Name">
+                <input type="text" id="updateSkills" class="w-full p-3 border rounded-lg mt-4" placeholder="New Skills">
+                <input type="text" id="updateLocation" class="w-full p-3 border rounded-lg mt-4" placeholder="New Location">
+
+                <button type="submit" class="bg-blue-500 text-white px-6 py-3 rounded-md text-lg font-medium hover:bg-blue-600 transition duration-300 mt-4">
+                    Update Profile
+                </button>
+            </form>
+
+            <button onclick="logout()" class="bg-red-500 text-white px-6 py-3 rounded-md text-lg font-medium hover:bg-red-600 transition duration-300 mt-6">Logout</button>
+        </div>
+    </section>
+
+    <!-- Dynamic Bookings or Jobs Section -->
+    <section class="py-10 max-w-4xl mx-auto">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold mb-4" id="sectionTitle">Active Bookings</h3>
+            <div id="bookingsList" class="space-y-4">
+                <p class="text-gray-500">Loading...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-center text-white py-6">
+        <p class="text-gray-400 text-lg">&copy; 2025 ServiceX. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        let currentUser = null;
+
+        async function loadUserProfile() {
+            const token = localStorage.getItem("token");
+            if (!token) return;
+
+            try {
+                const response = await fetch("http://localhost:5000/profile", {
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+                const user = await response.json();
+                currentUser = user;
+
+                if (response.ok) {
+                    document.getElementById("userName").innerText = user.name || "No Name";
+                    document.getElementById("userEmail").innerText = user.email || "No Email";
+                    document.getElementById("updateName").value = user.name || "";
+                    document.getElementById("updateSkills").value = user.skills || "";
+                    document.getElementById("updateLocation").value = user.location || "";
+                    document.getElementById("userProfileImage").src = user.profilePicture || "default-profile.png";
+
+                    if (user.skills && user.skills.toLowerCase().includes("plumber") || user.skills.toLowerCase().includes("carpenter") || user.skills.toLowerCase().includes("cleaner") || user.skills.toLowerCase().includes("painter") || user.skills.toLowerCase().includes("laptop")) {
+                        document.getElementById("sectionTitle").innerText = "Active Job Applications";
+                        loadUserApplications();
+                    } else {
+                        loadUserBookings();
+                    }
+                } else {
+                    alert("Error loading profile");
+                }
+            } catch (error) {
+                console.error("Error loading profile", error);
+            }
+        }
+
+        async function loadUserBookings() {
+            const token = localStorage.getItem("token");
+            const container = document.getElementById("bookingsList");
+            container.innerHTML = "<p class='text-gray-500'>Loading bookings...</p>";
+
+            try {
+                const response = await fetch("http://localhost:5000/my-bookings", {
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                const bookings = await response.json();
+
+                if (response.ok) {
+                    if (bookings.length === 0) {
+                        container.innerHTML = "<p class='text-gray-500'>No active bookings found.</p>";
+                    } else {
+                        container.innerHTML = bookings.map(booking => `
+                            <div class="border p-4 rounded-lg shadow-sm bg-gray-50">
+                                <p><strong>Service:</strong> ${booking.serviceName}</p>
+                                <p><strong>Time:</strong> ${booking.serviceTime}</p>
+                                <p><strong>Payment:</strong> $${booking.paymentAmount}</p>
+                                <p><strong>Status:</strong> ${booking.status}</p>
+                            </div>
+                        `).join('');
+                    }
+                } else {
+                    container.innerHTML = `<p class='text-red-500'>Failed to load bookings: ${bookings.message}</p>`;
+                }
+            } catch (error) {
+                console.error("Error loading bookings", error);
+                container.innerHTML = "<p class='text-red-500'>Error loading bookings</p>";
+            }
+        }
+
+        async function loadUserApplications() {
+            const token = localStorage.getItem("token");
+            const container = document.getElementById("bookingsList");
+            container.innerHTML = "<p class='text-gray-500'>Loading applications...</p>";
+
+            try {
+                const response = await fetch("http://localhost:5000/my-applications", {
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                const applications = await response.json();
+
+                if (response.ok) {
+                    if (applications.length === 0) {
+                        container.innerHTML = "<p class='text-gray-500'>No job applications found.</p>";
+                    } else {
+                        container.innerHTML = applications.map(app => `
+                            <div class="border p-4 rounded-lg shadow-sm bg-gray-50">
+                                <p><strong>Job Title:</strong> ${app.jobTitle}</p>
+                                <p><strong>Location:</strong> ${app.jobAddress}</p>
+                                <p><strong>Time:</strong> ${app.jobTime}</p>
+                                <p><strong>Notes:</strong> ${app.notes || 'None'}</p>
+                                <p><strong>Applied At:</strong> ${new Date(app.appliedAt).toLocaleString()}</p>
+                            </div>
+                        `).join('');
+                    }
+                } else {
+                    container.innerHTML = `<p class='text-red-500'>Failed to load applications: ${applications.message}</p>`;
+                }
+            } catch (error) {
+                console.error("Error loading applications", error);
+                container.innerHTML = "<p class='text-red-500'>Error loading applications</p>";
+            }
+        }
+
+        document.getElementById("updateProfileForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const token = localStorage.getItem("token");
+
+            const updatedData = {
+                name: document.getElementById("updateName").value.trim(),
+                skills: document.getElementById("updateSkills").value.trim(),
+                location: document.getElementById("updateLocation").value.trim()
+            };
+
+            try {
+                const response = await fetch("http://localhost:5000/update-profile", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify(updatedData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert("Profile updated successfully!");
+                    loadUserProfile();
+                } else {
+                    alert("Failed to update profile: " + result.message);
+                }
+            } catch (error) {
+                console.error("Error updating profile", error);
+            }
+        });
+
+        document.getElementById("updateProfileImage").addEventListener("change", async function(event) {
+            const file = event.target.files[0];
+            if (!file) return alert("No file selected!");
+
+            const formData = new FormData();
+            formData.append("profilePicture", file);
+
+            const token = localStorage.getItem("token");
+
+            try {
+                const response = await fetch("http://localhost:5000/uploadProfilePicture", {
+                    method: "POST",
+                    headers: { "Authorization": `Bearer ${token}` },
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert("Profile picture updated successfully!");
+                    document.getElementById("userProfileImage").src = result.profilePicture;
+                } else {
+                    alert("Failed to update profile picture: " + result.message);
+                }
+            } catch (error) {
+                console.error("Error uploading profile picture", error);
+            }
+        });
+
+        function logout() {
+    localStorage.removeItem("token");
+    window.location.href = "/gg.html";
+}
+
+// Load everything
+loadUserProfile();
+
+// Set Home button dynamically
+const homeLink = document.getElementById("dynamicHomeLink");
+homeLink.addEventListener("click", function(e) {
+    e.preventDefault();
+    if (
+        currentUser && currentUser.skills && (
+            currentUser.skills.toLowerCase().includes("plumber") ||
+            currentUser.skills.toLowerCase().includes("carpenter") ||
+            currentUser.skills.toLowerCase().includes("cleaner") ||
+            currentUser.skills.toLowerCase().includes("painter") ||
+            currentUser.skills.toLowerCase().includes("laptop")
+        )
+    ) {
+        window.location.href = "./HomePages/home1.html";
+    } else {
+        window.location.href = "./HomePages/home.html";
+    }
+});
+</script>
+</body>
+</html>
+
